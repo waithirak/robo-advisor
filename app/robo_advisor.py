@@ -4,16 +4,21 @@ import csv
 import json
 import os
 
+from dotenv import load_dotenv
+
+
 import requests
+
+load_dotenv()
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
 #included in the python language so we don't have to install anything
 #
-#from dotenv import load_dotenv
+#
 
-#load_dotenv()
+#
 
 #API_KEY = os.environ["ALPHAVANTAGE_API_KEY"] - not going to use 
 #API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY") - not going to use 
@@ -47,7 +52,9 @@ def to_usd(my_price):
 #
 # Info Inputs
 #
-request_url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo"
+api_key = API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", default="OOPS")
+symbol = "MSFT"  #going to ask user
+request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 
 response = requests.get(request_url)
 #print(type(response))
@@ -64,6 +71,7 @@ dates = list(tsd.keys())
 
 latest_day = dates[0] #0 is the first item in the list (assuming the latest day is first, might need to update if we dont sort )
 latest_close = tsd[latest_day]["4. close"]
+
 
 #get the high price from each day
 high_prices = []
