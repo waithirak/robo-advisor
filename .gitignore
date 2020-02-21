@@ -1,5 +1,9 @@
 # .gitignore
 
+
+# .gitignore file
+
+.DS_Store
 # ignore secret environment variable values in the ".env" file:
 .env
 
