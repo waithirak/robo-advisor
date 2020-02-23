@@ -9,36 +9,19 @@ from dotenv import load_dotenv
 
 import requests
 
+import datetime
+
 load_dotenv()
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
+
 #included in the python language so we don't have to install anything
-#
-#
-
-#
-
-#API_KEY = os.environ["ALPHAVANTAGE_API_KEY"] - not going to use 
-#API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY") - not going to use 
-#API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", default="OOPS") - going to use
-
-#symbol = "TSLA" # todo: ask for a user input
 
 #request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
 #print("URL:", request_url)
-
-#print("REQUESTING SOME DATA FROM THE INTERNET...")
-#response = requests.get(request_url)
-#print(type(response))
-#print(response.status_code)
-#print(type(response.text)) #> str
-
-# handle response errors:
-#if "Error Message" in response.text:
-    #print("OOPS couldn't find that symbol, please try again")
-    #exit()
+#handle response errors:
 
 #parsed_response = json.loads(response.text)
 #print(type(parsed_response)) #> dict
@@ -46,6 +29,7 @@ def to_usd(my_price):
 #print(parsed_response)
 
 #breakpoint()
+
 #End of inclass
 #2/20 going to work below here: 
 
@@ -53,13 +37,22 @@ def to_usd(my_price):
 # Info Inputs
 #
 api_key = API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", default="OOPS")
-symbol = "MSFT"  #going to ask user
+symbol = input("PLEASE INPUT SELECTED STOCK SYMBOL:  ")
+print("                                         ")
+print("-------------------------")
+print("REQUESTING SOME DATA FROM THE INTERNET...")
+
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 
 response = requests.get(request_url)
 #print(type(response))
 #print(response.status_code) #>200 which means it was successfull
 #print(response.text) # response text is a str so we need to use the JSON module to process it into a dictionary, what we want to do is parse the response from a string into a dictionary 
+if "Error Message" in response.text:
+    print("OOPS couldn't find that symbol, please try again")
+    exit()
+
+
 
 parsed_response = json.loads(response.text)
 
@@ -71,6 +64,10 @@ dates = list(tsd.keys())
 
 latest_day = dates[0] #0 is the first item in the list (assuming the latest day is first, might need to update if we dont sort )
 latest_close = tsd[latest_day]["4. close"]
+
+
+#VALIDATION: 
+
 
 
 #get the high price from each day
@@ -87,6 +84,9 @@ for date in dates:
 recent_high = max(high_prices)
 recent_low = min(low_prices)
 
+now = datetime.datetime.now()
+print
+
 
 #breakpoint()
 
@@ -94,6 +94,7 @@ recent_low = min(low_prices)
 
 
 #Info Outputs
+
 
 #write it to csv , start with copy and paste from csv repo on github: 
 
@@ -116,16 +117,13 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
         })
 
 
-
-
-
 ###
 
 print("-------------------------")
-print("SELECTED SYMBOL: XYZ")
+print("SELECTED SYMBOL: " + symbol)
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA")
-print("REQUEST AT: 2018-02-20 02:00pm")
+print("REQUEST AT: " + (now.strftime("%m/%d/%Y %H:%M%p")))
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
@@ -138,6 +136,3 @@ print("-------------------------")
 print(f"WRITING DATA TO CSV FILE: {csv_file_path}...")
 print("HAPPY INVESTING!")
 print("-------------------------")
-
-#in class 2/19
-#selected_stock = input("Please Input Selected Stock Symbol")
