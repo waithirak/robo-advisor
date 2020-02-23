@@ -21,7 +21,7 @@ def to_usd(my_price):
 
 #request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
 #print("URL:", request_url)
-#handle response errors:
+
 
 #parsed_response = json.loads(response.text)
 #print(type(parsed_response)) #> dict
@@ -48,11 +48,10 @@ response = requests.get(request_url)
 #print(type(response))
 #print(response.status_code) #>200 which means it was successfull
 #print(response.text) # response text is a str so we need to use the JSON module to process it into a dictionary, what we want to do is parse the response from a string into a dictionary 
+
 if "Error Message" in response.text:
     print("OOPS couldn't find that symbol, please try again")
     exit()
-
-
 
 parsed_response = json.loads(response.text)
 
@@ -73,24 +72,24 @@ latest_close = tsd[latest_day]["4. close"]
 #get the high price from each day
 high_prices = []
 low_prices = []
+closing_prices = [] #test
 
 for date in dates:
     high_price = tsd[date]["2. high"]
     high_prices.append(float(high_price))
     low_price = tsd[date]["3. low"]
     low_prices.append(float(low_price))
+    closing_price = tsd[date]["4. close"]     #test
+    closing_prices.append(float(closing_price))   #test
 
 #max of all high prices 
 recent_high = max(high_prices)
 recent_low = min(low_prices)
 
+moving_average = sum(closing_prices)/100  #Alphavantage only gives you the last 100 days of data 
+#moving average works so now just write the recommendation system
+
 now = datetime.datetime.now()
-print
-
-
-#breakpoint()
-
-
 
 
 #Info Outputs
@@ -116,6 +115,8 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
             "volume":daily_prices["5. volume"]
         })
 
+#time to write  a recommendation system - Simple Moving Averages
+#idea source: https://www.investopedia.com/articles/active-trading/052014/how-use-moving-average-buy-stocks.asp
 
 ###
 
@@ -130,6 +131,7 @@ print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
+print(f"100 DAY MOVING AVERAGE: {to_usd(float(moving_average))}")
 print("RECOMMENDATION: BUY!")
 print("RECOMMENDATION REASON: TODO")
 print("-------------------------")
