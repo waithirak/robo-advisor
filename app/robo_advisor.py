@@ -16,23 +16,6 @@ load_dotenv()
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
-
-#included in the python language so we don't have to install anything
-
-#request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
-#print("URL:", request_url)
-
-
-#parsed_response = json.loads(response.text)
-#print(type(parsed_response)) #> dict
-
-#print(parsed_response)
-
-#breakpoint()
-
-#End of inclass
-#2/20 going to work below here: 
-
 #
 # Info Inputs
 #
@@ -67,31 +50,38 @@ latest_close = tsd[latest_day]["4. close"]
 
 #VALIDATION: 
 
-
-
 #get the high price from each day
 high_prices = []
 low_prices = []
-closing_prices = [] #test
+closing_prices = []
 
 for date in dates:
     high_price = tsd[date]["2. high"]
     high_prices.append(float(high_price))
     low_price = tsd[date]["3. low"]
     low_prices.append(float(low_price))
-    closing_price = tsd[date]["4. close"]     #test
-    closing_prices.append(float(closing_price))   #test
+    closing_price = tsd[date]["4. close"]    
+    closing_prices.append(float(closing_price))  
 
 #max of all high prices 
 recent_high = max(high_prices)
 recent_low = min(low_prices)
 
-moving_average = sum(closing_prices)/100  #Alphavantage only gives you the last 100 days of data 
-#moving average works so now just write the recommendation system
+moving_average = sum(closing_prices)/100 #Alphavantage only gives you the last 100 days of data 
+#moving average works (matches internet info) so now just write the recommendation system
 
 now = datetime.datetime.now()
 
+x = float(latest_close)
+y = float(moving_average)
 
+if x >= y:
+    stock_rec = "BUY"
+    stock_reason = "STOCK SEEMS TO BE INDICATING A LONG TERM UPWARD TREND IN VALUE"
+else: 
+    stock_rec = "SELL"
+    stock_reason = "STOCK SEEMS TO BE INDICATING A LONG TERM DOWNWARD TREND IN VALUE"
+    
 #Info Outputs
 
 
@@ -117,6 +107,8 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
 
 #time to write  a recommendation system - Simple Moving Averages
 #idea source: https://www.investopedia.com/articles/active-trading/052014/how-use-moving-average-buy-stocks.asp
+#recommendation is BUY if equal to or above the 100 Day SMA & SELL if below SMA
+#reason is below SMA = long term trending downwards, above SMA = long term trending upwards
 
 ###
 
@@ -132,8 +124,8 @@ print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
 print(f"100 DAY MOVING AVERAGE: {to_usd(float(moving_average))}")
-print("RECOMMENDATION: BUY!")
-print("RECOMMENDATION REASON: TODO")
+print("RECOMMENDATION: " + stock_rec)
+print("RECOMMENDATION REASON: " + stock_reason)
 print("-------------------------")
 print(f"WRITING DATA TO CSV FILE: {csv_file_path}...")
 print("HAPPY INVESTING!")
