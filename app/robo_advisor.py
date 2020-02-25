@@ -21,9 +21,18 @@ def to_usd(my_price):
 #
 api_key = API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", default="OOPS")
 symbol = input("PLEASE INPUT SELECTED STOCK SYMBOL:  ")
-print("                                         ")
-print("-------------------------")
-print("REQUESTING SOME DATA FROM THE INTERNET...")
+while True:
+    if symbol.isdigit():
+        print("WRONG INPUT")
+        break
+    else:
+        print("                                         ")
+        print("-------------------------")
+        print("REQUESTING SOME DATA FROM THE INTERNET...")
+        break
+        
+
+#want a do not get if it meets certain requirements
 
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 

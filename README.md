@@ -32,6 +32,4 @@ ALPHAVANTAGE_API_KEY="___________"
 
 From within the virtual environment, demonstrate your ability to run the Python script from the command-line:
 
-```sh
 python app/robo_advisor.py
-```
