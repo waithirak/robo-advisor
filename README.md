@@ -2,6 +2,16 @@
 
 Project description: https://github.com/prof-rossetti/intro-to-python/blob/master/projects/robo-advisor/README.md
 
+## Installation
+
+Clone from GitHub https://github.com/waithirak/robo-advisor
+
+Navigate from the command line: 
+
+```sh
+cd ~/Desktop/robo-advisor
+```
+
 ## Environment Setup
 
 Create and activate a new Anaconda virtual environment:
@@ -32,4 +42,6 @@ ALPHAVANTAGE_API_KEY="___________"
 
 From within the virtual environment, demonstrate your ability to run the Python script from the command-line:
 
+```sh
 python app/robo_advisor.py
+```

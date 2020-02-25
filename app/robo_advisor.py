@@ -23,8 +23,8 @@ api_key = API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", default="OOPS")
 symbol = input("PLEASE INPUT SELECTED STOCK SYMBOL:  ")
 while True:
     if symbol.isdigit():
-        print("WRONG INPUT")
-        break
+        print("SORRY, INCORRECT INPUT")
+        exit()
     else:
         print("                                         ")
         print("-------------------------")
@@ -42,7 +42,7 @@ response = requests.get(request_url)
 #print(response.text) # response text is a str so we need to use the JSON module to process it into a dictionary, what we want to do is parse the response from a string into a dictionary 
 
 if "Error Message" in response.text:
-    print("OOPS couldn't find that symbol, please try again")
+    print("OOPS,  PLEASE TRY AGAIN")
     exit()
 
 parsed_response = json.loads(response.text)
@@ -86,10 +86,10 @@ y = float(moving_average)
 
 if x >= y:
     stock_rec = "BUY"
-    stock_reason = "STOCK SEEMS TO BE INDICATING A LONG TERM UPWARD TREND IN VALUE"
+    stock_reason = "WHEN COMPARING THE LATEST CLOSING PRICE OF THE STOCK TO THE STOCK'S MOVING AVERAGE, THERE SEEMS TO BE SIGNS INDICATING A LONG TERM UPWARD TREND IN THE VALUE OF THE STOCK"
 else: 
     stock_rec = "SELL"
-    stock_reason = "STOCK SEEMS TO BE INDICATING A LONG TERM DOWNWARD TREND IN VALUE"
+    stock_reason = "WHEN COMPARING THE LATEST CLOSING PRICE OF THE STOCK TO THE STOCK'S MOVING AVERAGE, THERE SEEMS TO BE SIGNS INDICATING A LONG TERM DOWNWARD TREND IN THE VALUE OF THE STOCK"
     
 #Info Outputs
 
